@@ -2,7 +2,7 @@
 
 namespace TrainingSofka.Web.Data.Entities
 {
-    public class TravelsEntity
+    public class TravelEntity
     {
         public int Id { get; set; }
         [MaxLength(50, ErrorMessage = "The field {0} can not have more than {1} characters.")]

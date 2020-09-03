@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,12 +8,14 @@ using TrainingSofka.Web.Data.Entities;
 
 namespace TrainingSofka.Web.Data
 {
-    public class DataContext:DbContext
+    public class DataContext: IdentityDbContext<UserEntity>
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
 
         }
-        public DbSet<TravelsEntity> Travels { get; set; }
+        public DbSet<TravelEntity> Travels { get; set; }
+        public DbSet<EquipmentEntity> Equipments { get; set; }
+        public DbSet<FlightEntity> flights { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -10,22 +11,23 @@ using TrainingSofka.Web.Data.Entities;
 
 namespace TrainingSofka.Web.Controllers
 {
-    public class TravelsController : Controller
+    public class EquipmentController : Controller
     {
         private readonly DataContext _context;
-
-        public TravelsController(DataContext context)
+        public const double Max = 18000;
+        public double Acum;
+        public EquipmentController(DataContext context)
         {
             _context = context;
         }
 
-        // GET: Travels
+        // GET: Equipment
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Travels.ToListAsync());
+            return View(await _context.Equipments.ToListAsync());
         }
 
-        // GET: Travels/Details/5
+        // GET: Equipment/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,50 +35,44 @@ namespace TrainingSofka.Web.Controllers
                 return NotFound();
             }
 
-            var travelsEntity = await _context.Travels
+            var equipmentEntity = await _context.Equipments
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (travelsEntity == null)
+            if (equipmentEntity == null)
             {
                 return NotFound();
             }
 
-            return View(travelsEntity);
+            return View(equipmentEntity);
         }
 
-        // GET: Travels/Create
+        // GET: Equipment/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Travels/Create
+        // POST: Equipment/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Destination,Days,Distance,Total,Discount")] TravelEntity travelsEntity)
+        public async Task<IActionResult> Create([Bind("Id,Peso,ValueDolars,ValuePesos,TotalEquipment")] EquipmentEntity equipmentEntity)
         {
-            travelsEntity.Total = travelsEntity.Distance * 35 * travelsEntity.Days;
+          
             if (ModelState.IsValid)
             {
-                if (travelsEntity.Distance > 1000 && travelsEntity.Days > 7)
+                if (equipmentEntity.Peso<500)
                 {
-                    travelsEntity.Discount = travelsEntity.Total * 0.30;
-                    travelsEntity.Total = travelsEntity.Total - travelsEntity.Discount;
+
                 }
-                else
-                {
-                    travelsEntity.Total = travelsEntity.Distance * 35 * travelsEntity.Days;
-                }
-                _context.Add(travelsEntity);
+                _context.Add(equipmentEntity);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(travelsEntity);
-
+            return View(equipmentEntity);
         }
 
-        // GET: Travels/Edit/5
+        // GET: Equipment/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -84,22 +80,22 @@ namespace TrainingSofka.Web.Controllers
                 return NotFound();
             }
 
-            var travelsEntity = await _context.Travels.FindAsync(id);
-            if (travelsEntity == null)
+            var equipmentEntity = await _context.Equipments.FindAsync(id);
+            if (equipmentEntity == null)
             {
                 return NotFound();
             }
-            return View(travelsEntity);
+            return View(equipmentEntity);
         }
 
-        // POST: Travels/Edit/5
+        // POST: Equipment/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Destination,Days,Distance,Total")] TravelEntity travelEntity)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Peso,ValueDolars,ValuePesos,TotalEquipment")] EquipmentEntity equipmentEntity)
         {
-            if (id != travelEntity.Id)
+            if (id != equipmentEntity.Id)
             {
                 return NotFound();
             }
@@ -108,22 +104,12 @@ namespace TrainingSofka.Web.Controllers
             {
                 try
                 {
-                    travelEntity.Total = travelEntity.Distance * 35 * travelEntity.Days;
-                    if (travelEntity.Distance > 1000 && travelEntity.Days > 7)
-                    {
-                        travelEntity.Discount = travelEntity.Total * 0.30;
-                        travelEntity.Total = travelEntity.Total - travelEntity.Discount;
-                    }
-                    else
-                    {
-                        travelEntity.Total = travelEntity.Distance * 35 * travelEntity.Days;
-                    }
-                    _context.Update(travelEntity);
+                    _context.Update(equipmentEntity);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TravelsEntityExists(travelEntity.Id))
+                    if (!EquipmentEntityExists(equipmentEntity.Id))
                     {
                         return NotFound();
                     }
@@ -134,10 +120,10 @@ namespace TrainingSofka.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(travelEntity);
+            return View(equipmentEntity);
         }
 
-        // GET: Travels/Delete/5
+        // GET: Equipment/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -145,30 +131,30 @@ namespace TrainingSofka.Web.Controllers
                 return NotFound();
             }
 
-            var travelsEntity = await _context.Travels
+            var equipmentEntity = await _context.Equipments
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (travelsEntity == null)
+            if (equipmentEntity == null)
             {
                 return NotFound();
             }
 
-            return View(travelsEntity);
+            return View(equipmentEntity);
         }
 
-        // POST: Travels/Delete/5
+        // POST: Equipment/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var travelsEntity = await _context.Travels.FindAsync(id);
-            _context.Travels.Remove(travelsEntity);
+            var equipmentEntity = await _context.Equipments.FindAsync(id);
+            _context.Equipments.Remove(equipmentEntity);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TravelsEntityExists(int id)
+        private bool EquipmentEntityExists(int id)
         {
-            return _context.Travels.Any(e => e.Id == id);
+            return _context.Equipments.Any(e => e.Id == id);
         }
     }
 }

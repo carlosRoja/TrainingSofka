@@ -1,0 +1,54 @@
+﻿@model IEnumerable<TrainingSofka.Web.Data.Entities.EquipmentEntity>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Peso)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ValueDolars)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ValuePesos)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalEquipment)
+            </th>
+           
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Peso)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ValueDolars)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ValuePesos)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalEquipment)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

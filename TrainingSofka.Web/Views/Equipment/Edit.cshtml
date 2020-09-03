@@ -1,0 +1,49 @@
+﻿@model TrainingSofka.Web.Data.Entities.EquipmentEntity
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>EquipmentEntity</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Peso" class="control-label"></label>
+                <input asp-for="Peso" class="form-control" />
+                <span asp-validation-for="Peso" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ValueDolars" class="control-label"></label>
+                <input asp-for="ValueDolars" class="form-control" />
+                <span asp-validation-for="ValueDolars" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ValuePesos" class="control-label"></label>
+                <input asp-for="ValuePesos" class="form-control" />
+                <span asp-validation-for="ValuePesos" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalEquipment" class="control-label"></label>
+                <input asp-for="TotalEquipment" class="form-control" />
+                <span asp-validation-for="TotalEquipment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
