@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace TrainingSofka.Web.Data.Entities
 {
@@ -16,7 +12,7 @@ namespace TrainingSofka.Web.Data.Entities
         public int Days { get; set; }
         [Required(ErrorMessage = "The field {0} is mandatory.")]
         public double Distance { get; set; }
-      
-        public decimal Total { get; set; }
+        public double Discount { get; set; }
+        public double  Total { get; set; }
     }
 }
