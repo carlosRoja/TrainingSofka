@@ -14,6 +14,8 @@ namespace TrainingSofka.Web.Data.Entities
         public double ValueDolars { get; set; }
         public double ValuePesos { get; set; }
         public double TotalEquipment { get; set; }
-        public FlightEntity FlightEntity { get; set; }
+        public double Avergage { get; set; }
+        public double Max { get; set; }
+        public double Min { get; set; }
     }
 }

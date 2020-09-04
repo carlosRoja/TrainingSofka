@@ -8,7 +8,7 @@ using TrainingSofka.Web.Data.Entities;
 
 namespace TrainingSofka.Web.Data
 {
-    public class DataContext: IdentityDbContext<UserEntity>
+    public class DataContext: DbContext
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
@@ -16,6 +16,6 @@ namespace TrainingSofka.Web.Data
         }
         public DbSet<TravelEntity> Travels { get; set; }
         public DbSet<EquipmentEntity> Equipments { get; set; }
-        public DbSet<FlightEntity> flights { get; set; }
+     
     }
 }

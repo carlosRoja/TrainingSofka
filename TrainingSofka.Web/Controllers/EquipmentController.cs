@@ -58,7 +58,7 @@ namespace TrainingSofka.Web.Controllers
             if (ModelState.IsValid)
             {
                 double peso = equipmentEntity.Peso;
-                FlightEntity flight = new FlightEntity();
+            
                 if (peso < 500)
                 {
                     if (peso >= 0 && peso <= 25)
@@ -81,6 +81,7 @@ namespace TrainingSofka.Web.Controllers
                     }
                     equipmentEntity.ValueDolars =equipmentEntity.TotalEquipment / 3669;
                     equipmentEntity.ValuePesos = equipmentEntity.TotalEquipment;
+
                     
                 }
                 else
@@ -127,7 +128,7 @@ namespace TrainingSofka.Web.Controllers
                 try
                 {
                     double peso = equipmentEntity.Peso;
-                    FlightEntity flight = new FlightEntity();
+                 
                     if (peso < 500)
                     {
                         if (peso >= 0 && peso <= 25)
