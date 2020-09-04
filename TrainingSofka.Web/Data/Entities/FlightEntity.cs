@@ -12,6 +12,7 @@ namespace TrainingSofka.Web.Data.Entities
        public int TotalPackage { get; set; }
         public int PackageMax { get; set; }
         public int PackageMin{ get; set; }
+        public int Prom { get; set; }
         public ICollection<EquipmentEntity> Equipments { get; set; }
 
     }

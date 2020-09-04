@@ -11,7 +11,7 @@ namespace TrainingSofka.Web.Data.Entities
         public int Id { get; set; }
         [Required(ErrorMessage = "The field {0} is mandatory.")]
         public double Peso { get; set; }
-        public int ValueDolars { get; set; }
+        public double ValueDolars { get; set; }
         public double ValuePesos { get; set; }
         public double TotalEquipment { get; set; }
         public FlightEntity FlightEntity { get; set; }

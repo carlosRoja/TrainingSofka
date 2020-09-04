@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
 using TrainingSofka.Web.Data;
 using TrainingSofka.Web.Data.Entities;
 
@@ -26,7 +22,7 @@ namespace TrainingSofka.Web.Controllers
         {
             return View(await _context.Equipments.ToListAsync());
         }
-
+     
         // GET: Equipment/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -35,7 +31,7 @@ namespace TrainingSofka.Web.Controllers
                 return NotFound();
             }
 
-            var equipmentEntity = await _context.Equipments
+            EquipmentEntity equipmentEntity = await _context.Equipments
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (equipmentEntity == null)
             {
@@ -58,10 +54,10 @@ namespace TrainingSofka.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Peso,ValueDolars,ValuePesos,TotalEquipment")] EquipmentEntity equipmentEntity)
         {
-            
+
             if (ModelState.IsValid)
             {
-                var peso = equipmentEntity.Peso;
+                double peso = equipmentEntity.Peso;
                 FlightEntity flight = new FlightEntity();
                 if (peso < 500)
                 {
@@ -79,10 +75,13 @@ namespace TrainingSofka.Web.Controllers
                         equipmentEntity.TotalEquipment = (peso * 2500);
                     }
                     Acum = Acum + peso;
-                    if (Acum>Max)
+                    if (Acum > Max)
                     {
                         return RedirectToAction(nameof(Error));
                     }
+                    equipmentEntity.ValueDolars =equipmentEntity.TotalEquipment / 3669;
+                    equipmentEntity.ValuePesos = equipmentEntity.TotalEquipment;
+                    
                 }
                 else
                 {
@@ -103,14 +102,14 @@ namespace TrainingSofka.Web.Controllers
                 return NotFound();
             }
 
-            var equipmentEntity = await _context.Equipments.FindAsync(id);
+            EquipmentEntity equipmentEntity = await _context.Equipments.FindAsync(id);
             if (equipmentEntity == null)
             {
                 return NotFound();
             }
             return View(equipmentEntity);
         }
-
+       
         // POST: Equipment/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -127,6 +126,36 @@ namespace TrainingSofka.Web.Controllers
             {
                 try
                 {
+                    double peso = equipmentEntity.Peso;
+                    FlightEntity flight = new FlightEntity();
+                    if (peso < 500)
+                    {
+                        if (peso >= 0 && peso <= 25)
+                        {
+                            equipmentEntity.TotalEquipment = 0;
+                        }
+                        else if (peso >= 26 && peso <= 300)
+                        {
+                            equipmentEntity.TotalEquipment = (peso * 1500);
+
+                        }
+                        else if (peso >= 301 && peso <= 500)
+                        {
+                            equipmentEntity.TotalEquipment = (peso * 2500);
+                        }
+                        Acum = Acum + peso;
+                        if (Acum > Max)
+                        {
+                            return RedirectToAction(nameof(Error));
+                        }
+                        equipmentEntity.ValueDolars = Acum / 3669;
+                        equipmentEntity.ValuePesos = equipmentEntity.TotalEquipment;
+                    }
+                    else
+                    {
+                        return RedirectToAction(nameof(Error));
+                    }
+
                     _context.Update(equipmentEntity);
                     await _context.SaveChangesAsync();
                 }
@@ -154,7 +183,7 @@ namespace TrainingSofka.Web.Controllers
                 return NotFound();
             }
 
-            var equipmentEntity = await _context.Equipments
+            EquipmentEntity equipmentEntity = await _context.Equipments
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (equipmentEntity == null)
             {
@@ -172,7 +201,7 @@ namespace TrainingSofka.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var equipmentEntity = await _context.Equipments.FindAsync(id);
+            EquipmentEntity equipmentEntity = await _context.Equipments.FindAsync(id);
             _context.Equipments.Remove(equipmentEntity);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

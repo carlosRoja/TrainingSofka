@@ -18,30 +18,16 @@
                 <input asp-for="Peso" class="form-control" />
                 <span asp-validation-for="Peso" class="text-danger"></span>
             </div>
+          
             <div class="form-group">
-                <label asp-for="ValueDolars" class="control-label"></label>
-                <input asp-for="ValueDolars" class="form-control" />
-                <span asp-validation-for="ValueDolars" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ValuePesos" class="control-label"></label>
-                <input asp-for="ValuePesos" class="form-control" />
-                <span asp-validation-for="ValuePesos" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TotalEquipment" class="control-label"></label>
-                <input asp-for="TotalEquipment" class="form-control" />
-                <span asp-validation-for="TotalEquipment" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-success">Back to List</a>
 </div>
 
 @section Scripts {
