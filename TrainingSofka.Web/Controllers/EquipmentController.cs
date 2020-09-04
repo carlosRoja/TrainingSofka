@@ -58,12 +58,35 @@ namespace TrainingSofka.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Peso,ValueDolars,ValuePesos,TotalEquipment")] EquipmentEntity equipmentEntity)
         {
-          
+            
             if (ModelState.IsValid)
             {
-                if (equipmentEntity.Peso<500)
+                var peso = equipmentEntity.Peso;
+                FlightEntity flight = new FlightEntity();
+                if (peso < 500)
                 {
+                    if (peso >= 0 && peso <= 25)
+                    {
+                        equipmentEntity.TotalEquipment = 0;
+                    }
+                    else if (peso >= 26 && peso <= 300)
+                    {
+                        equipmentEntity.TotalEquipment = (peso * 1500);
 
+                    }
+                    else if (peso >= 301 && peso <= 500)
+                    {
+                        equipmentEntity.TotalEquipment = (peso * 2500);
+                    }
+                    Acum = Acum + peso;
+                    if (Acum>Max)
+                    {
+                        return RedirectToAction(nameof(Error));
+                    }
+                }
+                else
+                {
+                    return RedirectToAction(nameof(Error));
                 }
                 _context.Add(equipmentEntity);
                 await _context.SaveChangesAsync();
@@ -140,7 +163,10 @@ namespace TrainingSofka.Web.Controllers
 
             return View(equipmentEntity);
         }
-
+        public IActionResult Error()
+        {
+            return View();
+        }
         // POST: Equipment/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
