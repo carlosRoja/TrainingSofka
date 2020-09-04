@@ -10,8 +10,9 @@ namespace TrainingSofka.Web.Controllers
     public class EquipmentController : Controller
     {
         private readonly DataContext _context;
-        public const double Max = 18000;
+        public const double MaxValue = 18000;
         public double Acum;
+        public double ContPackage = 0;
         public EquipmentController(DataContext context)
         {
             _context = context;
@@ -22,7 +23,7 @@ namespace TrainingSofka.Web.Controllers
         {
             return View(await _context.Equipments.ToListAsync());
         }
-     
+
         // GET: Equipment/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -58,7 +59,8 @@ namespace TrainingSofka.Web.Controllers
             if (ModelState.IsValid)
             {
                 double peso = equipmentEntity.Peso;
-            
+                double pesoCount = equipmentEntity.Peso;
+
                 if (peso < 500)
                 {
                     if (peso >= 0 && peso <= 25)
@@ -74,20 +76,23 @@ namespace TrainingSofka.Web.Controllers
                     {
                         equipmentEntity.TotalEquipment = (peso * 2500);
                     }
-                    Acum = Acum + peso;
-                    if (Acum > Max)
+                   
+                    if (Acum > MaxValue)
                     {
                         return RedirectToAction(nameof(Error));
                     }
-                    equipmentEntity.ValueDolars =equipmentEntity.TotalEquipment / 3669;
+                    equipmentEntity.ValueDolars = equipmentEntity.TotalEquipment / 3669;
                     equipmentEntity.ValuePesos = equipmentEntity.TotalEquipment;
 
-                    
                 }
                 else
                 {
                     return RedirectToAction(nameof(Error));
                 }
+                Acum = Acum + peso;
+                pesoCount = pesoCount + 1;
+                equipmentEntity.Avergage = Acum / pesoCount;
+
                 _context.Add(equipmentEntity);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -110,7 +115,7 @@ namespace TrainingSofka.Web.Controllers
             }
             return View(equipmentEntity);
         }
-       
+
         // POST: Equipment/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -128,7 +133,7 @@ namespace TrainingSofka.Web.Controllers
                 try
                 {
                     double peso = equipmentEntity.Peso;
-                 
+
                     if (peso < 500)
                     {
                         if (peso >= 0 && peso <= 25)
@@ -145,12 +150,13 @@ namespace TrainingSofka.Web.Controllers
                             equipmentEntity.TotalEquipment = (peso * 2500);
                         }
                         Acum = Acum + peso;
-                        if (Acum > Max)
+                        if (Acum > MaxValue)
                         {
                             return RedirectToAction(nameof(Error));
                         }
                         equipmentEntity.ValueDolars = Acum / 3669;
                         equipmentEntity.ValuePesos = equipmentEntity.TotalEquipment;
+
                     }
                     else
                     {
